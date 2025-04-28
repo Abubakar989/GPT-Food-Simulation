@@ -1,0 +1,12 @@
+Django
+gunicorn
+djangorestframework
+psycopg2-binary
+python-dotenv
+spacy
+openai
+drf-yasg
+djangorestframework-simplejwt
+
+
+
