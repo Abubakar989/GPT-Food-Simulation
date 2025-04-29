@@ -26,7 +26,7 @@ jobs:
       - name: 🚀 SSH into EC2 and deploy
         run: |
           ssh ubuntu@13.51.171.38 << 'EOF'
-            cd ~/gpt_food_simulator
+            cd ~/GPT-Food-Simulation
             git pull origin master
             docker compose -f docker-compose-prod.yml down
             docker compose -f docker-compose-prod.yml up -d --build
