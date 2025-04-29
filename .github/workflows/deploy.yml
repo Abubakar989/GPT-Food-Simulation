@@ -28,8 +28,8 @@ jobs:
           ssh ubuntu@13.51.171.38 << 'EOF'
             cd ~/GPT-Food-Simulation
             git pull origin master
-            docker-compose -f docker-compose-prod.yml down
-            docker-compose -f docker-compose-prod.yml up -d --build
+            docker compose -f docker-compose-prod.yml down
+            docker compose -f docker-compose-prod.yml up -d --build
             bash docker/post_deploy.sh
           EOF
 
