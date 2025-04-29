@@ -6,6 +6,7 @@ docker compose -f docker-compose-prod.yml exec web python manage.py migrate --no
 echo " Collecting static files..."
 docker compose -f docker-compose-prod.yml exec web python manage.py collectstatic --noinput
 
+
 echo " Running conversation simulation..."
 docker compose -f docker-compose-prod.yml exec web python manage.py simulate_conversations
 
