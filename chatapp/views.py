@@ -18,9 +18,8 @@ class VegVeganUserList(APIView):
         results = []
         for convo in conversations:
             lower = convo.answer.lower()
-            if "vegan" in lower or "vegetarian" in lower:
-                foods = extract_foods_from_text(convo.answer)
-                results.append({
+            foods = extract_foods_from_text(convo.answer)
+            results.append({
                     "round": convo.round_number,
                     "diet_mentioned": "vegan" if "vegan" in lower else "vegetarian",
                     "top_3_foods": foods,

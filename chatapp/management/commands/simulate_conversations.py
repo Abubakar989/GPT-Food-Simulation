@@ -22,7 +22,7 @@ class Command(BaseCommand):
         Conversation.objects.all().delete()
         self.stdout.write(self.style.WARNING('All previous conversations deleted.'))
 
-        for i in range(1, 101):
+        for i in range(1, 5):
             question = chat_with_gpt([
                 {"role": "system", "content": "Ask me about my top 3 favorite foods. Phrase this as ONE unique question that hasn't been asked before. Only output the question itself."},
                 {"role": "user", "content": "Base question: What are your top 3 favorite foods?"}

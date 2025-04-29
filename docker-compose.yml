@@ -3,6 +3,7 @@ version: '3.9'
 services:
   db:
     image: postgres:15
+    container_name: gpt_food_db_local
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -13,8 +14,11 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   web:
-    build: .
-    command: ./entrypoint.sh  
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.local  # 🔥 use the correct Dockerfile for local dev
+    container_name: gpt_food_web_local
+    command: ./docker/entrypoint.sh  # 🔥 updated path
     volumes:
       - .:/app
     ports:
