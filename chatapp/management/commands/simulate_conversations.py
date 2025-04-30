@@ -16,7 +16,7 @@ def chat_with_gpt(messages):
     )
     return response.choices[0].message.content.strip()
 
-# class Command(BaseCommand):
+class Command(BaseCommand):
     help = "Simulate conversations with strictly vegan, vegetarian, or non-veg food lists"
 
     def handle(self, *args, **kwargs):
@@ -27,7 +27,7 @@ def chat_with_gpt(messages):
 
 
 
-        for i in range(1, 101):  # 5 conversations
+        for i in range(1, 101):  
             # Randomly select diet type for this conversation
             selected_diet = random.choice(diet_types)
 
