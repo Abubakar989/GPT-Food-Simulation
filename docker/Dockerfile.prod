@@ -39,8 +39,6 @@ RUN apt-get update && apt-get install -y \
 # Copy installed Python packages from builder
 COPY --from=builder /install /usr/local
 
-# OPTIONAL: Preload spaCy model (if used)
-RUN python -m spacy download en_core_web_lg
 
 # ✅ Preload HuggingFace and SentenceTransformer models to cache them
 RUN python -c "from transformers import AutoTokenizer, AutoModelForTokenClassification; \
