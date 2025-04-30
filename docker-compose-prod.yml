@@ -17,10 +17,10 @@ services:
   web:
     build:
       context: .
-      dockerfile: docker/Dockerfile.prod  # 🔥 correct path to production dockerfile
+      dockerfile: docker/Dockerfile.prod 
     container_name: gpt_food_web
     restart: always
-    entrypoint: docker/entrypoint.prod.sh  # 🔥 correct path to production entrypoint
+    entrypoint: docker/entrypoint.prod.sh  
     volumes:
       - .:/app
       - static_volume:/app/staticfiles

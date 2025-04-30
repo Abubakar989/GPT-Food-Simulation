@@ -1,20 +1,47 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.pyo
 
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+.env/
+.venv/
+pip-wheel-metadata/
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# Secret environment files
 .env
+.env.*
 
+# PyInstaller
+*.manifest
+*.spec
 
-*/migrations/__pycache__/
-*/migrations/*.pyc
-*/migrations/*.pyo
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# System files
+# VS Code / IDEs
+.vscode/
+.idea/
+
+# OS generated
 .DS_Store
 Thumbs.db
 
-# PostgreSQL database dumps
-*.dump
-*.sql

@@ -9,15 +9,17 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     gcc \
-    curl
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /app
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --prefix=/install -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --prefix=/install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
 # 🔵 Stage 2: Production image
 FROM python:3.11-slim
@@ -31,13 +33,22 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     curl \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy installed packages from builder
+# Copy installed Python packages from builder
 COPY --from=builder /install /usr/local
 
-# Install spaCy model
-RUN python -m spacy download en_core_web_sm
+# OPTIONAL: Preload spaCy model (if used)
+RUN python -m spacy download en_core_web_lg
+
+# ✅ Preload HuggingFace and SentenceTransformer models to cache them
+RUN python -c "from transformers import AutoTokenizer, AutoModelForTokenClassification; \
+AutoTokenizer.from_pretrained('carolanderson/roberta-base-food-ner'); \
+AutoModelForTokenClassification.from_pretrained('carolanderson/roberta-base-food-ner')"
+
+RUN python -c "from sentence_transformers import SentenceTransformer; \
+SentenceTransformer('all-MiniLM-L6-v2')"
 
 # Copy project files
 COPY . .
@@ -45,8 +56,8 @@ COPY . .
 # Expose internal port
 EXPOSE 8000
 
-# Set entrypoint
-COPY docker/entrypoint.prod.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Entrypoint
+COPY docker/entrypoint.prod.sh /entrypoint.prod.sh
+RUN chmod +x /entrypoint.prod.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.prod.sh"]

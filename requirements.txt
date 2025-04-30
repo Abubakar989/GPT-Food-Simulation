@@ -1,12 +1,18 @@
-Django
+numpy<2.0
+torch==2.1.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+transformers==4.35.2
+tokenizers==0.15.2
+huggingface_hub==0.20.3
+openai
+django
 gunicorn
 djangorestframework
 psycopg2-binary
 python-dotenv
-spacy
-openai
 drf-yasg
 djangorestframework-simplejwt
-
-
+scikit-learn
+pandas
+joblib
+sentence-transformers
 

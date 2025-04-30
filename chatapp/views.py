@@ -2,28 +2,52 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
-from chatapp.models import Conversation
-from chatapp.utils import extract_foods_from_text
+from .models import Conversation
+from .food_classifier import extract_food_names, classify_food_items
+
 
 class VegVeganUserList(APIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         tags=["Vegetarian/Vegan"],
-        operation_summary="List simulated users who mentioned vegetarian or vegan diets",
-        operation_description="Filters conversation data to return users who mentioned 'vegan' or 'vegetarian' in their answers. Also extracts top 3 foods mentioned."
+        operation_summary="Classify and extract food names",
+        operation_description="Classifies gpt response into vegan, vegetarian, or non-vegetarian and extracts relevant food names. Returns only vegetarian and vegan entries."
     )
     def get(self, request):
         conversations = Conversation.objects.all()
         results = []
+
         for convo in conversations:
-            lower = convo.answer.lower()
-            foods = extract_foods_from_text(convo.answer)
-            results.append({
+            answer_text = convo.answer
+
+            inferred_type = self.detect_label_from_text(answer_text)
+
+            if inferred_type not in ["vegan", "vegetarian", "non-vegetarian"]:
+                inferred_type = classify_food_items([answer_text])
+
+            if inferred_type in ["vegan", "vegetarian"]:
+                food_names = extract_food_names(answer_text)
+
+                results.append({
                     "round": convo.round_number,
-                    "diet_mentioned": "vegan" if "vegan" in lower else "vegetarian",
-                    "top_3_foods": foods,
                     "question": convo.question,
-                    "answer": convo.answer
+                    "answer": convo.answer,
+                    "foods": food_names,
+                    "type": inferred_type
                 })
-        return Response(results)
+
+        return Response({
+            "count": len(results),
+            "results": results
+        })
+
+    def detect_label_from_text(self, text):
+        text = text.lower()
+        if "non-vegetarian" in text:
+            return "non-vegetarian"
+        if "vegan" in text:
+            return "vegan"
+        if "vegetarian" in text:
+            return "vegetarian"
+        return None
