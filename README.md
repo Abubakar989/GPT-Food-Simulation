@@ -1,52 +1,49 @@
-GPT Food Simulator
+
+### GPT Food Simulator
 
 **GPT Food Simulator** is a Django-based API that simulates conversations between two AI agents about their **top 3 favorite foods**.  
 The system uses **OpenAI GPT models** to create these conversations dynamically and **filters vegan or vegetarian users** based on their food choices.
 
+**Powered by:** Hugging Face Transformers, and a custom ML classifier.
+
 The app provides secure user registration, login, and profile management with **JWT authentication**, and a clean **Swagger UI** for API documentation.
 
-- Fully Dockerized  
-- PostgreSQL Database  
-- Modern Natural Language Processing (NLP)  
-
-## How Natural Language Processing (NLP) is used
-
-To automatically **extract food names** from GPT's free-text answers, the project uses **spaCy**, a powerful NLP library.
-
-Instead of relying on simple keyword searches, the app:
-- Parses the GPT response into **linguistic structures** (noun chunks, tokens)
-- **Understands** and identifies relevant **food items** like "avocado toast", "chickpea curry", or "vegan pad thai"
-- **Ignores irrelevant words** like "a sprinkle" or "flavor" for clean results
-
-Thanks to this approach:
-- GPT answers can be **free-form** (sentences, lists, paragraphs)  
-- **Food names are extracted reliably** without manual hardcoding  
-- It adapts automatically even if GPT's phrasing changes
+**Try it live:** [http://16.170.234.158/swagger/](http://16.170.234.158/swagger/)
 
 ---
 
-##  Features
+## Key Features
 
-- Simulate 100 GPT-to-GPT food conversations
-- Detect if a user follows a vegan or vegetarian diet automatically
-- Extract top 3 favorite foods per user
-- User Authentication (Signup, Login, JWT Tokens)
-- Protected API endpoints with Bearer authentication
-- Fully documented via Swagger/OpenAPI
-- Dockerized setup (PostgreSQL + Django)
-
----
-
-## ⚙ Tech Stack
-
-- **Backend:** Django 5, Django REST Framework
-- **Authentication:** JWT (SimpleJWT)
-- **NLP:** spaCy (en_core_web_sm)
-- **Database:** PostgreSQL 15
-- **API Docs:** Swagger (drf-yasg)
-- **Deployment:** Docker & Docker Compose
+-  Simulates 100 GPT-to-GPT food conversations using OpenAI
+-  Extracts food names using `roberta-base-food-ner` (NER model)
+-  Classifies dishes into vegan, vegetarian, or non-vegetarian via scikit-learn model
+-  JWT-secured user auth (signup/login with tokens)
+-  Interactive Swagger API documentation
+-  Fully Dockerized with PostgreSQL + Gunicorn + Nginx
 
 ---
+
+## How NLP & AI Are Used
+
+Unlike traditional keyword filtering, this app uses **NLP + ML-based techniques**:
+
+### Food Name Extraction
+- Uses Hugging Face's [`carolanderson/roberta-base-food-ner`](https://huggingface.co/carolanderson/roberta-base-food-ner)
+
+### Food Classification
+- Uses a trained `scikit-learn` classifier (`food_classifier.pkl`)
+- Predicts if a dish is **vegan**, **vegetarian**, or **non-vegetarian**
+- Falls back to keyword hints (like “My favorite vegan dish is...”) when classification is ambiguous
+---
+
+### Future Improvements
+| Area           | Ideas                      |
+|----------------|----------------------------|
+| NLP Accuracy   | Use ensemble of models for entity extraction |
+| Classifier     | Replace with a fine-tuned transformer |
+| Performance    | Add async task queue (Celery) |
+| UI             | Build frontend dashboard with filters |
+| Feedback Loop  | User correction of dish classification |
 
 ##  How to Run the Project
 
@@ -80,11 +77,4 @@ Thanks to this approach:
    - API Docs (Swagger): [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
    - Admin Panel: [http://localhost:8000/admin/](http://localhost:8000/admin/)
 
-##  Credits
-
-This project uses:
-- [OpenAI API](https://platform.openai.com/)
-- [spaCy NLP](https://spacy.io/)
-- [Django REST Framework](https://www.django-rest-framework.org/)
-- [drf-yasg for Swagger](https://drf-yasg.readthedocs.io/)
 
