@@ -21,11 +21,11 @@ jobs:
 
       - name: 📡 Add EC2 host to known_hosts
         run: |
-          ssh-keyscan -H 13.61.179.85 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 16.170.234.158 >> ~/.ssh/known_hosts
 
       - name: 🚀 SSH into EC2 and deploy
         run: |
-          ssh ubuntu@13.61.179.85 << 'EOF'
+          ssh ubuntu@16.170.234.158 << 'EOF'
             cd ~/GPT-Food-Simulation
             git pull origin master
             docker compose -f docker-compose-prod.yml down
