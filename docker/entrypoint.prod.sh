@@ -28,4 +28,8 @@ echo " Simulating GPT-to-GPT conversations..."
 python manage.py simulate_conversations
 
 echo " Starting Gunicorn server..."
-exec gunicorn gpt_food_simulator.wsgi:application --bind 0.0.0.0:8000
+exec gunicorn gpt_food_simulator.wsgi:application \
+    --bind 0.0.0.0:8000 \
+    --workers 1 \
+    --threads 2 \
+    --timeout 120
